@@ -55,7 +55,7 @@ class convert_extension_to_namespaces {
             exit (1);
         }
 
-        if (!file_exists($path.'/ext_emconf.php')) {
+        if (!file_exists($path . DIRECTORY_SEPARATOR . 'ext_emconf.php')) {
             echo "The directory seems not to be an extension (ext_emconf.php missing)!\n";
             $this->usage();
             exit (1);
@@ -132,13 +132,13 @@ Review the changed files!\n";
                 continue;
 
             // let's process the sub dir
-            } elseif (is_dir($from . $file) && $file != "." && $file != "..") {
-                $this->copyAllFilesWithRename($from . $file . '/', $search, $replace);
+            } elseif (is_dir($from . $file) && $file != '.' && $file != '..') {
+                $this->copyAllFilesWithRename($from . $file . DIRECTORY_SEPARATOR, $search, $replace);
 
             } elseif (is_file($from . $file)) {
 
                 $file_parts = pathinfo($from . $file);
-                if ($file_parts['extension'] == 'php') {
+                if (isset($file_parts['extension']) && $file_parts['extension'] === 'php') {
                     $fileContent = file_get_contents($from . $file);
                     $fileContentNew = str_replace($search, $replace, $fileContent);
                     if ($fileContent != $fileContentNew) {
